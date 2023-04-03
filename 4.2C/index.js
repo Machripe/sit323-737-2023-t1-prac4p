@@ -55,9 +55,9 @@ function authorizeAction(req, res, callback) {
 app.post('/login', (req, res) => {
     const username = req.body.username;
     const hashedPassword = crypto.pbkdf2Sync(req.body.password, authenticationMap.get(username).salt, 10000, 64, 'sha512').toString('hex');
-    // Not using any password encryption for this task
     if (hashedPassword !== authenticationMap.get(username).hashedPassword) return res.status(401).json({ status: 401, message: "Login Failure: Invalid credentials" });
 
+    // Token expires in 90 seconds
     const expiresIn = '90000';
 
     const payload = {
